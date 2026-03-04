@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>The Avatar Bar — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --espresso:#1a0e08;
+  --bark:#2e1a0e;
+  --bronze:#8b5e3c;
+  --gold:#c9a84c;
+  --gold2:#e8c97a;
+  --champagne:#f5e6c8;
+  --ivory:#fdf6ec;
+  --muted:#a08060;
+  --card-bg:#faf3e8;
+  --border:rgba(139,94,60,.15);
+  --complete:#4a7c59;
+}
+body{
+  background:var(--ivory);
+  color:var(--espresso);
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  min-height:100vh;
+}
+
+/* ── TOPNAV ── */
+.topnav{
+  background:var(--espresso);
+  padding:0 40px;
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  border-bottom:1px solid rgba(201,168,76,.15);
+}
+.nav-logo{display:flex;align-items:center;gap:12px}
+.nav-logo-icon{
+  width:34px;height:34px;
+  border:1px solid rgba(201,168,76,.5);
+  border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-logo-icon svg{width:16px;height:16px;fill:var(--gold)}
+.nav-logo-text{
+  font-family:'Playfair Display',serif;
+  font-size:.85rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--champagne);
+}
+.nav-logo-text span{display:block;font-size:.52rem;letter-spacing:.25em;color:var(--muted);font-family:'Jost',sans-serif;margin-top:1px}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-greeting{font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.nav-greeting strong{color:var(--champagne);font-weight:400}
+.nav-logout{
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;border:1px solid rgba(201,168,76,.2);
+  padding:6px 14px;border-radius:2px;transition:all .2s;
+}
+.nav-logout:hover{color:var(--gold);border-color:rgba(201,168,76,.5)}
+
+/* ── HERO BANNER ── */
+.hero-banner{
+  background:linear-gradient(135deg,var(--bark) 0%,var(--espresso) 60%);
+  padding:48px 40px 40px;
+  position:relative;overflow:hidden;
+}
+.hero-banner::before{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(ellipse,rgba(201,168,76,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-banner::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent);
+}
+.hero-eyebrow{
+  font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold);opacity:.6}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:400;color:var(--ivory);letter-spacing:.02em;line-height:1.2;
+}
+.hero-h1 em{font-style:italic;color:var(--gold2)}
+.hero-sub{font-size:.82rem;color:var(--muted);margin-top:10px;letter-spacing:.03em;max-width:500px;line-height:1.7}
+
+/* Overall progress bar */
+.overall-progress{
+  margin-top:28px;max-width:480px;
+  animation:fadeUp .5s .2s ease both;opacity:0;
+}
+.op-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.op-label span{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.op-label strong{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold2)}
+.op-track{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.op-fill{height:100%;background:linear-gradient(to right,var(--bronze),var(--gold),var(--gold2));border-radius:2px;transition:width 1s cubic-bezier(.4,0,.2,1);width:0%}
+
+/* ── MAIN CONTENT ── */
+.main{max-width:1100px;margin:0 auto;padding:40px 40px 80px}
+
+.section-header{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:28px;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;font-weight:400;color:var(--espresso);letter-spacing:.04em;
+}
+.section-line{flex:1;height:1px;background:var(--border)}
+.section-gem{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;opacity:.6}
+
+/* ── MODULE GRID ── */
+.module-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+}
+
+/* MODULE CARD */
+.module-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+  animation:fadeUp .5s ease both;opacity:0;
+  position:relative;
+}
+.module-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(26,14,8,.12),0 0 0 1px rgba(201,168,76,.25);
+  border-color:rgba(201,168,76,.3);
+}
+.module-card.completed{border-color:rgba(74,124,89,.3)}
+.module-card.completed .module-card-top{background:linear-gradient(135deg,#1a3324,#0f2018)}
+
+.module-card-top{
+  background:linear-gradient(135deg,var(--bark),var(--espresso));
+  padding:24px 24px 20px;
+  position:relative;overflow:hidden;
+}
+.module-card-top::before{
+  content:'';position:absolute;
+  top:-40px;right:-40px;
+  width:120px;height:120px;
+  background:radial-gradient(ellipse,rgba(201,168,76,.12),transparent 65%);
+}
+.module-num{
+  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);opacity:.8;margin-bottom:8px;
+}
+.module-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:400;
+  color:var(--ivory);letter-spacing:.03em;line-height:1.3;
+}
+.module-duration{
+  font-size:.65rem;letter-spacing:.12em;color:var(--muted);
+  margin-top:8px;display:flex;align-items:center;gap:6px;
+}
+.module-duration svg{width:11px;height:11px;fill:var(--muted)}
+
+/* Progress bar on card */
+.module-progress-wrap{padding:16px 24px 0}
+.mp-row{display:flex;justify-content:space-between;margin-bottom:6px}
+.mp-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mp-pct{font-size:.7rem;color:var(--bronze);font-weight:400}
+.mp-track{height:3px;background:rgba(139,94,60,.15);border-radius:2px;overflow:hidden}
+.mp-fill{height:100%;background:linear-gradient(to right,var(--bronze),var(--gold));border-radius:2px;transition:width 1s cubic-bezier(.4,0,.2,1);width:0%}
+.module-card.completed .mp-fill{background:linear-gradient(to right,#4a7c59,#6aad80)}
+
+/* Card bottom row */
+.module-card-bottom{
+  padding:14px 24px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--border);
+  margin-top:14px;
+}
+.module-status{
+  display:flex;align-items:center;gap:6px;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0}
+.module-card.completed .status-dot{background:var(--complete)}
+.module-card.in-progress .status-dot{background:var(--gold);animation:pulse 1.5s infinite}
+.status-text{color:var(--muted)}
+.module-card.completed .status-text{color:var(--complete)}
+.module-card.in-progress .status-text{color:var(--bronze)}
+
+.module-play-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--espresso);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.module-play-btn svg{width:13px;height:13px;fill:var(--gold);margin-left:2px}
+.module-play-btn:hover{background:var(--bronze);transform:scale(1.1)}
+.module-card.completed .module-play-btn{background:var(--complete)}
+.module-card.completed .module-play-btn svg{fill:#fff;margin-left:0}
+.module-card.completed .module-play-btn svg.replay{display:block}
+
+/* Worksheet row */
+.worksheet-row{
+  padding:0 24px 18px;
+  display:flex;align-items:center;gap:8px;
+}
+.worksheet-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--bronze);border:1px solid rgba(139,94,60,.2);
+  background:transparent;border-radius:2px;padding:6px 12px;
+  cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif;
+}
+.worksheet-btn svg{width:11px;height:11px;fill:var(--bronze)}
+.worksheet-btn:hover{background:rgba(139,94,60,.08);border-color:rgba(139,94,60,.4)}
+.worksheet-btn:disabled{opacity:.35;cursor:not-allowed}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── VIDEO MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(10,6,3,.88);
+  backdrop-filter:blur(8px);
+  z-index:500;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+
+.video-modal{
+  background:var(--espresso);
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:6px;
+  width:100%;max-width:800px;
+  overflow:hidden;
+  transform:translateY(20px);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.modal-overlay.open .video-modal{transform:translateY(0)}
+
+.video-modal-header{
+  padding:20px 24px 16px;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  border-bottom:1px solid rgba(201,168,76,.12);
+}
+.vmh-left{}
+.vmh-num{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:4px}
+.vmh-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ivory);font-weight:400}
+.vmh-duration{font-size:.65rem;color:var(--muted);margin-top:4px;letter-spacing:.08em}
+.modal-close{
+  background:none;border:none;color:var(--muted);
+  font-size:1.4rem;cursor:pointer;line-height:1;
+  transition:color .2s;flex-shrink:0;padding:2px 4px;
+}
+.modal-close:hover{color:var(--ivory)}
+
+/* Video player area */
+.video-wrap{
+  position:relative;
+  background:#000;
+  aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.video-wrap video{
+  width:100%;height:100%;object-fit:contain;display:block;
+}
+.video-placeholder{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;
+  background:linear-gradient(135deg,#0f0a06,#1a0e08);
+}
+.video-placeholder-icon{
+  width:64px;height:64px;border-radius:50%;
+  border:2px solid rgba(201,168,76,.3);
+  display:flex;align-items:center;justify-content:center;
+}
+.video-placeholder-icon svg{width:24px;height:24px;fill:rgba(201,168,76,.4);margin-left:4px}
+.video-placeholder p{font-size:.78rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.video-placeholder span{font-size:.65rem;color:rgba(160,128,96,.5);letter-spacing:.06em}
+
+/* Video progress bar */
+.video-controls{
+  padding:14px 24px 18px;
+  background:rgba(0,0,0,.3);
+}
+.vc-bar-wrap{
+  height:4px;background:rgba(255,255,255,.1);
+  border-radius:2px;cursor:pointer;margin-bottom:10px;position:relative;
+}
+.vc-bar-fill{
+  height:100%;background:linear-gradient(to right,var(--bronze),var(--gold));
+  border-radius:2px;width:0%;transition:width .2s linear;pointer-events:none;
+}
+.vc-row{display:flex;align-items:center;justify-content:space-between}
+.vc-time{font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.vc-watched{font-size:.62rem;color:var(--bronze);letter-spacing:.1em;text-transform:uppercase}
+
+/* Modal bottom */
+.video-modal-footer{
+  padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid rgba(201,168,76,.1);
+}
+.vmf-nav{display:flex;gap:10px}
+.vmf-btn{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:var(--muted);font-family:'Jost',sans-serif;font-size:.65rem;
+  letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;
+  border-radius:2px;cursor:pointer;transition:all .2s;
+}
+.vmf-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.3);color:var(--gold)}
+.vmf-btn:disabled{opacity:.3;cursor:not-allowed}
+.vmf-complete{
+  background:var(--complete);border:none;
+  color:#fff;font-family:'Jost',sans-serif;font-size:.65rem;
+  letter-spacing:.14em;text-transform:uppercase;padding:8px 18px;
+  border-radius:2px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:6px;
+}
+.vmf-complete svg{width:12px;height:12px;fill:#fff}
+.vmf-complete:hover{background:#3d6b4a;transform:translateY(-1px)}
+.vmf-complete.done{background:rgba(74,124,89,.3);cursor:default}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.module-card:nth-child(1){animation-delay:.05s}
+.module-card:nth-child(2){animation-delay:.1s}
+.module-card:nth-child(3){animation-delay:.15s}
+.module-card:nth-child(4){animation-delay:.2s}
+.module-card:nth-child(5){animation-delay:.25s}
+.module-card:nth-child(6){animation-delay:.3s}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+  .topnav{padding:0 20px}
+  .hero-banner{padding:32px 20px 28px}
+  .main{padding:28px 20px 60px}
+  .module-grid{grid-template-columns:1fr}
+  .nav-greeting{display:none}
+  .video-modal{max-height:90vh;overflow-y:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    </div>
+    <div class="nav-logo-text">
+      The Avatar Bar
+      <span>by Velocity Agentic</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <span class="nav-greeting">Welcome back, <strong id="studentName">Student</strong></span>
+    <span class="nav-logout" onclick="logout()">Sign Out</span>
+  </div>
+</nav>
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="hero-eyebrow">Your Training Dashboard</div>
+  <h1 class="hero-h1">Avatar Authority<br/><em>Training Program</em></h1>
+  <p class="hero-sub">Work through each module at your own pace. Your progress is saved automatically. Complete all six and your avatar goes live — today.</p>
+  <div class="overall-progress">
+    <div class="op-label">
+      <span>Overall Progress</span>
+      <strong id="overallPct">0%</strong>
+    </div>
+    <div class="op-track"><div class="op-fill" id="overallFill"></div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="section-header">
+    <div class="section-gem"></div>
+    <h2 class="section-title">Your Modules</h2>
+    <div class="section-line"></div>
+    <div class="section-gem"></div>
+  </div>
+  <div class="module-grid" id="moduleGrid"></div>
+</main>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal" onclick="if(event.target===this)closeModal()">
+  <div class="video-modal">
+    <div class="video-modal-header">
+      <div class="vmh-left">
+        <div class="vmh-num" id="modalNum">Module I</div>
+        <div class="vmh-title" id="modalTitle">Module Title</div>
+        <div class="vmh-duration" id="modalDuration">Duration</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="video-wrap" id="videoWrap">
+      <!-- Video or placeholder loads here -->
+    </div>
+    <div class="video-controls">
+      <div class="vc-bar-wrap" id="vcBarWrap">
+        <div class="vc-bar-fill" id="vcBarFill"></div>
+      </div>
+      <div class="vc-row">
+        <span class="vc-time" id="vcTime">0:00 / 0:00</span>
+        <span class="vc-watched" id="vcWatched">0% watched</span>
+      </div>
+    </div>
+    <div class="video-modal-footer">
+      <div class="vmf-nav">
+        <button class="vmf-btn" id="prevBtn" onclick="navModule(-1)">← Previous</button>
+        <button class="vmf-btn" id="nextBtn" onclick="navModule(1)">Next →</button>
+      </div>
+      <button class="vmf-complete" id="completeBtn" onclick="markComplete()">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Mark Complete
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AUTH CHECK ──
+var session = sessionStorage.getItem('avatarbar_user');
+if(!session){ window.location.href='index.html'; }
+else{ document.getElementById('studentName').textContent = JSON.parse(session).name || 'Student'; }
+
+function logout(){
+  sessionStorage.removeItem('avatarbar_user');
+  window.location.href='index.html';
+}
+
+// ── MODULE DATA ──
+// Replace YOUR_VIDEO_URL_X.mp4 with actual GitHub raw video URLs when ready
+var modules = [
+  {
+    num:'I', title:'Foundation & Identity',
+    duration:'~12 min', desc:'Discover the core pillars of your digital identity and define your avatar\'s non-negotiables.',
+    video:'YOUR_VIDEO_URL_1.mp4',
+    worksheet:'YOUR_WORKSHEET_1.pdf', worksheetName:'Module I Worksheet'
+  },
+  {
+    num:'II', title:'Visual Authority',
+    duration:'~15 min', desc:'Craft the visual language that makes your avatar instantly recognizable and irresistibly magnetic.',
+    video:'YOUR_VIDEO_URL_2.mp4',
+    worksheet:'YOUR_WORKSHEET_2.pdf', worksheetName:'Module II Worksheet'
+  },
+  {
+    num:'III', title:'Voice & Tone',
+    duration:'~10 min', desc:'Define how your avatar speaks — the words, cadence, and energy that make your audience lean in.',
+    video:'YOUR_VIDEO_URL_3.mp4',
+    worksheet:'YOUR_WORKSHEET_3.pdf', worksheetName:'Module III Worksheet'
+  },
+  {
+    num:'IV', title:'Platform Strategy',
+    duration:'~14 min', desc:'Choose your stage. Learn where your avatar shows up, how often, and what she says when she gets there.',
+    video:'YOUR_VIDEO_URL_4.mp4',
+    worksheet:'YOUR_WORKSHEET_4.pdf', worksheetName:'Module IV Worksheet'
+  },
+  {
+    num:'V', title:'Content Architecture',
+    duration:'~13 min', desc:'Build a repeatable content system that keeps your avatar visible, consistent, and converting.',
+    video:'YOUR_VIDEO_URL_5.mp4',
+    worksheet:'YOUR_WORKSHEET_5.pdf', worksheetName:'Module V Worksheet'
+  },
+  {
+    num:'VI', title:'Launch Day',
+    duration:'~10 min', desc:'Your avatar is ready. This is your launch blueprint — go live with confidence, clarity, and momentum.',
+    video:'YOUR_VIDEO_URL_6.mp4',
+    worksheet:'YOUR_WORKSHEET_6.pdf', worksheetName:'Module VI Worksheet'
+  }
+];
+
+// ── PROGRESS STATE ──
+function getProgress(){ return JSON.parse(localStorage.getItem('avatarbar_progress')||'{}'); }
+function saveProgress(p){ localStorage.setItem('avatarbar_progress', JSON.stringify(p)); }
+
+// ── BUILD MODULE CARDS ──
+function buildCards(){
+  var grid = document.getElementById('moduleGrid');
+  var progress = getProgress();
+  grid.innerHTML = '';
+  modules.forEach(function(m, i){
+    var key = 'module_'+i;
+    var pct = progress[key+'_pct'] || 0;
+    var done = progress[key+'_done'] || false;
+    var statusClass = done ? 'completed' : (pct > 0 ? 'in-progress' : '');
+    var statusText = done ? 'Completed' : (pct > 0 ? 'In Progress' : 'Not Started');
+    var hasVideo = !m.video.startsWith('YOUR_VIDEO');
+    var hasWorksheet = !m.worksheet.startsWith('YOUR_WORKSHEET');
+
+    var card = document.createElement('div');
+    card.className = 'module-card ' + statusClass;
+    card.innerHTML =
+      '<div class="module-card-top">'+
+        '<div class="module-num">Module '+m.num+'</div>'+
+        '<div class="module-title">'+m.title+'</div>'+
+        '<div class="module-duration">'+
+          '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z"/></svg>'+
+          m.duration+
+        '</div>'+
+      '</div>'+
+      '<div class="module-progress-wrap">'+
+        '<div class="mp-row">'+
+          '<span class="mp-label">Progress</span>'+
+          '<span class="mp-pct">'+Math.round(pct)+'%</span>'+
+        '</div>'+
+        '<div class="mp-track"><div class="mp-fill" style="width:'+pct+'%"></div></div>'+
+      '</div>'+
+      '<div class="worksheet-row">'+
+        '<button class="worksheet-btn" onclick="downloadWorksheet(event,'+i+')" '+(hasWorksheet?'':'disabled')+'>'+
+          '<svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>'+
+          m.worksheetName+
+        '</button>'+
+      '</div>'+
+      '<div class="module-card-bottom">'+
+        '<div class="module-status">'+
+          '<div class="status-dot"></div>'+
+          '<span class="status-text">'+statusText+'</span>'+
+        '</div>'+
+        '<button class="module-play-btn" onclick="openModule('+i+')">'+
+          (done
+            ? '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
+            : '<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>'
+          )+
+        '</button>'+
+      '</div>';
+
+    card.querySelector('.module-card-top').addEventListener('click', function(){ openModule(i); });
+    grid.appendChild(card);
+  });
+  updateOverall();
+}
+
+// ── OVERALL PROGRESS ──
+function updateOverall(){
+  var progress = getProgress();
+  var total = 0;
+  modules.forEach(function(_,i){
+    var done = progress['module_'+i+'_done'];
+    var pct = progress['module_'+i+'_pct'] || 0;
+    total += done ? 100 : pct;
+  });
+  var overall = Math.round(total / modules.length);
+  document.getElementById('overallPct').textContent = overall+'%';
+  document.getElementById('overallFill').style.width = overall+'%';
+}
+
+// ── MODULE MODAL ──
+var currentIdx = 0;
+var currentVideo = null;
+var watchInterval = null;
+
+function openModule(idx){
+  currentIdx = idx;
+  var m = modules[idx];
+  var progress = getProgress();
+  var key = 'module_'+idx;
+  var done = progress[key+'_done'] || false;
+
+  document.getElementById('modalNum').textContent = 'Module '+m.num;
+  document.getElementById('modalTitle').textContent = m.title;
+  document.getElementById('modalDuration').textContent = m.duration;
+  document.getElementById('prevBtn').disabled = (idx === 0);
+  document.getElementById('nextBtn').disabled = (idx === modules.length-1);
+
+  var completeBtn = document.getElementById('completeBtn');
+  if(done){
+    completeBtn.classList.add('done');
+    completeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Completed';
+  } else {
+    completeBtn.classList.remove('done');
+    completeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Mark Complete';
+  }
+
+  // Build video or placeholder
+  var wrap = document.getElementById('videoWrap');
+  wrap.innerHTML = '';
+  if(currentVideo){ currentVideo.pause(); currentVideo = null; }
+  clearInterval(watchInterval);
+
+  var hasVideo = !m.video.startsWith('YOUR_VIDEO');
+  if(hasVideo){
+    var vid = document.createElement('video');
+    vid.src = m.video;
+    vid.controls = false;
+    vid.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;cursor:pointer';
+    vid.addEventListener('click', function(){ vid.paused ? vid.play() : vid.pause(); });
+    vid.addEventListener('timeupdate', function(){ onVideoProgress(vid, idx); });
+    vid.addEventListener('ended', function(){ autoComplete(idx); });
+    wrap.appendChild(vid);
+    currentVideo = vid;
+    vid.play().catch(function(){});
+  } else {
+    var ph = document.createElement('div');
+    ph.className = 'video-placeholder';
+    ph.innerHTML =
+      '<div class="video-placeholder-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="rgba(201,168,76,.4)"/></svg></div>'+
+      '<p>Video Coming Soon</p>'+
+      '<span>Module '+m.num+' · '+m.title+'</span>';
+    wrap.appendChild(ph);
+    document.getElementById('vcBarFill').style.width = '0%';
+    document.getElementById('vcTime').textContent = '0:00 / 0:00';
+    document.getElementById('vcWatched').textContent = '0% watched';
+  }
+
+  document.getElementById('videoModal').classList.add('open');
+}
+
+function onVideoProgress(vid, idx){
+  if(!vid.duration) return;
+  var pct = (vid.currentTime / vid.duration) * 100;
+  document.getElementById('vcBarFill').style.width = pct+'%';
+  document.getElementById('vcTime').textContent = fmt(vid.currentTime)+' / '+fmt(vid.duration);
+  document.getElementById('vcWatched').textContent = Math.round(pct)+'% watched';
+
+  // Save progress
+  var progress = getProgress();
+  var key = 'module_'+idx;
+  if(!progress[key+'_done']){
+    progress[key+'_pct'] = Math.max(progress[key+'_pct']||0, pct);
+    saveProgress(progress);
+    // Update card fill live
+    var fills = document.querySelectorAll('.mp-fill');
+    if(fills[idx]) fills[idx].style.width = progress[key+'_pct']+'%';
+    var pctLabels = document.querySelectorAll('.mp-pct');
+    if(pctLabels[idx]) pctLabels[idx].textContent = Math.round(progress[key+'_pct'])+'%';
+    updateOverall();
+  }
+
+  // Click on progress bar to seek
+  document.getElementById('vcBarWrap').onclick = function(e){
+    var r = this.getBoundingClientRect();
+    vid.currentTime = ((e.clientX - r.left)/r.width)*vid.duration;
+  };
+}
+
+function autoComplete(idx){
+  var progress = getProgress();
+  var key = 'module_'+idx;
+  if(!progress[key+'_done']){
+    progress[key+'_done'] = true;
+    progress[key+'_pct'] = 100;
+    saveProgress(progress);
+    buildCards();
+    var completeBtn = document.getElementById('completeBtn');
+    completeBtn.classList.add('done');
+    completeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Completed';
+  }
+}
+
+function markComplete(){
+  var btn = document.getElementById('completeBtn');
+  if(btn.classList.contains('done')) return;
+  autoComplete(currentIdx);
+}
+
+function navModule(dir){
+  var next = currentIdx + dir;
+  if(next < 0 || next >= modules.length) return;
+  if(currentVideo){ currentVideo.pause(); currentVideo = null; }
+  openModule(next);
+}
+
+function closeModal(){
+  if(currentVideo){ currentVideo.pause(); }
+  document.getElementById('videoModal').classList.remove('open');
+  buildCards();
+}
+
+function downloadWorksheet(e, idx){
+  e.stopPropagation();
+  var m = modules[idx];
+  if(m.worksheet.startsWith('YOUR_WORKSHEET')){ alert('Worksheet coming soon!'); return; }
+  window.open(m.worksheet, '_blank');
+}
+
+function fmt(s){
+  if(isNaN(s)) return '0:00';
+  return Math.floor(s/60)+':'+(Math.floor(s%60)).toString().padStart(2,'0');
+}
+
+// ── INIT ──
+buildCards();
+// Animate overall progress bar on load
+setTimeout(function(){ updateOverall(); }, 300);
+</script>
+</body>
+</html>

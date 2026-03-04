@@ -1,723 +1,483 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name='ir-site-verification-token' value='1245075313' />
-<meta  charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ECMG Creative Studios @ecmgroups</title> 
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>The Avatar Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --espresso:#1a0e08;
+  --bark:#2e1a0e;
+  --bronze:#8b5e3c;
+  --gold:#c9a84c;
+  --gold2:#e8c97a;
+  --champagne:#f5e6c8;
+  --ivory:#fdf6ec;
+  --muted:#a08060;
+  --white:#ffffff;
+}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--espresso);
+  color:var(--ivory);
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  display:flex;
+  align-items:stretch;
+  justify-content:stretch;
+  min-height:100vh;
+  overflow:hidden;
+}
 
-<!-- Favicons -->
-<link rel="shortcut icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+/* ── SPLIT LAYOUT ── */
+.split{display:flex;width:100%;min-height:100vh}
 
-<!-- Styles -->
-<link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet" media="screen">
+/* LEFT PANEL */
+.panel-left{
+  flex:1.1;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:60px 64px;
+  overflow:hidden;
+  background:linear-gradient(145deg,var(--espresso) 0%,var(--bark) 100%);
+}
+.panel-left::before{
+  content:'';
+  position:absolute;
+  top:-200px;left:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(ellipse,rgba(201,168,76,.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+.panel-left::after{
+  content:'';
+  position:absolute;
+  bottom:-150px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(ellipse,rgba(139,94,60,.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+/* Logo Mark */
+.logo-mark{
+  position:relative;
+  z-index:1;
+  margin-bottom:48px;
+  animation:fadeUp .7s ease both;
+}
+.logo-bar{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.logo-icon{
+  width:48px;height:48px;
+  border:1.5px solid var(--gold);
+  border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  flex-shrink:0;
+}
+.logo-icon::before{
+  content:'';
+  position:absolute;
+  inset:4px;
+  border:1px solid rgba(201,168,76,.3);
+  border-radius:1px;
+}
+.logo-icon svg{width:22px;height:22px;fill:var(--gold)}
+.logo-text{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--champagne);
+  line-height:1.2;
+}
+.logo-text span{display:block;font-size:.6rem;letter-spacing:.35em;color:var(--muted);font-family:'Jost',sans-serif;font-weight:300;margin-top:3px}
+
+/* Hero Text */
+.hero-text{position:relative;z-index:1;animation:fadeUp .7s .1s ease both;opacity:0}
+.hero-eyebrow{
+  font-size:.65rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);opacity:.6}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem,4vw,3.8rem);
+  font-weight:400;
+  line-height:1.15;
+  color:var(--ivory);
+  letter-spacing:.02em;
+}
+.hero-h1 em{
+  font-style:italic;
+  color:var(--gold2);
+}
+.hero-sub{
+  font-size:.9rem;
+  color:var(--muted);
+  line-height:1.8;
+  margin-top:22px;
+  max-width:380px;
+  letter-spacing:.03em;
+}
+
+/* Decorative bar */
+.deco-bar{
+  position:relative;z-index:1;
+  margin-top:48px;
+  display:flex;align-items:center;gap:16px;
+  animation:fadeUp .7s .2s ease both;opacity:0;
+}
+.deco-line{width:40px;height:1px;background:linear-gradient(to right,var(--gold),transparent)}
+.deco-gems{display:flex;gap:8px}
+.deco-gem{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);opacity:.5}
+.deco-gem:nth-child(2){opacity:.8;background:var(--gold2)}
+
+/* Stats row */
+.stats-row{
+  position:relative;z-index:1;
+  margin-top:40px;
+  display:flex;gap:36px;
+  animation:fadeUp .7s .3s ease both;opacity:0;
+}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold2);font-weight:400}
+.stat-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+/* Floating card preview */
+.preview-card{
+  position:absolute;
+  bottom:48px;right:-20px;
+  width:200px;
+  background:rgba(46,26,14,.8);
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:4px;
+  padding:16px;
+  backdrop-filter:blur(10px);
+  animation:floatIn .8s .5s ease both;opacity:0;
+  z-index:2;
+}
+.preview-card-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:10px}
+.preview-modules{display:flex;flex-direction:column;gap:7px}
+.preview-module{display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--muted)}
+.preview-module-dot{width:6px;height:6px;border-radius:50%;background:var(--bronze);flex-shrink:0}
+.preview-module-dot.done{background:var(--gold)}
+
+/* RIGHT PANEL — Login */
+.panel-right{
+  width:460px;
+  flex-shrink:0;
+  background:var(--ivory);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:60px 52px;
+  position:relative;
+  overflow:hidden;
+}
+.panel-right::before{
+  content:'';
+  position:absolute;
+  top:-100px;right:-100px;
+  width:300px;height:300px;
+  background:radial-gradient(ellipse,rgba(201,168,76,.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+.login-welcome{
+  font-size:.65rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--bronze);
+  margin-bottom:10px;
+  animation:fadeUp .6s .2s ease both;opacity:0;
+}
+.login-title{
+  font-family:'Playfair Display',serif;
+  font-size:2rem;
+  font-weight:400;
+  color:var(--espresso);
+  line-height:1.2;
+  margin-bottom:8px;
+  animation:fadeUp .6s .25s ease both;opacity:0;
+}
+.login-title em{font-style:italic;color:var(--bronze)}
+.login-subtitle{
+  font-size:.82rem;
+  color:var(--bronze);
+  opacity:.7;
+  margin-bottom:36px;
+  letter-spacing:.03em;
+  animation:fadeUp .6s .3s ease both;opacity:0;
+}
+
+/* Form */
+.login-form{display:flex;flex-direction:column;gap:18px;animation:fadeUp .6s .35s ease both;opacity:0}
+.form-group{display:flex;flex-direction:column;gap:7px}
+.form-label{
+  font-size:.62rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--bronze);
+}
+.form-input{
+  background:transparent;
+  border:none;
+  border-bottom:1.5px solid rgba(139,94,60,.25);
+  padding:10px 0;
+  font-family:'Jost',sans-serif;
+  font-size:.92rem;
+  font-weight:300;
+  color:var(--espresso);
+  outline:none;
+  transition:border-color .25s ease;
+  letter-spacing:.03em;
+}
+.form-input::placeholder{color:rgba(139,94,60,.35)}
+.form-input:focus{border-bottom-color:var(--gold)}
+
+.forgot{
+  font-size:.68rem;
+  color:var(--bronze);
+  opacity:.6;
+  text-align:right;
+  cursor:pointer;
+  letter-spacing:.04em;
+  transition:opacity .2s;
+  margin-top:-8px;
+}
+.forgot:hover{opacity:1}
+
+.login-btn{
+  margin-top:8px;
+  background:var(--espresso);
+  color:var(--champagne);
+  border:none;
+  padding:16px;
+  font-family:'Jost',sans-serif;
+  font-size:.75rem;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all .25s ease;
+  position:relative;
+  overflow:hidden;
+}
+.login-btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,var(--bronze),var(--gold));
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.login-btn:hover::before{opacity:1}
+.login-btn span{position:relative;z-index:1}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,14,8,.3)}
+
+.divider-row{
+  display:flex;align-items:center;gap:14px;
+  margin:8px 0;
+}
+.divider-row::before,.divider-row::after{content:'';flex:1;height:1px;background:rgba(139,94,60,.15)}
+.divider-row span{font-size:.6rem;letter-spacing:.15em;color:var(--bronze);opacity:.5;text-transform:uppercase}
+
+.access-note{
+  text-align:center;
+  font-size:.7rem;
+  color:var(--bronze);
+  opacity:.55;
+  letter-spacing:.05em;
+  line-height:1.7;
+  margin-top:4px;
+}
+.access-note a{color:var(--bronze);opacity:.8;cursor:pointer}
+
+/* Bottom branding */
+.panel-right-footer{
+  position:absolute;
+  bottom:24px;left:0;right:0;
+  text-align:center;
+  font-size:.58rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:rgba(139,94,60,.35);
+}
+.panel-right-footer span{color:rgba(201,168,76,.5)}
+
+/* Error state */
+.error-msg{
+  font-size:.7rem;
+  color:#c0392b;
+  letter-spacing:.04em;
+  display:none;
+  margin-top:-8px;
+}
+.error-msg.show{display:block}
+
+/* Animations */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes floatIn{
+  from{opacity:0;transform:translateX(30px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+/* Mobile */
+@media(max-width:768px){
+  html,body{overflow:auto}
+  .split{flex-direction:column}
+  .panel-left{padding:48px 32px 40px;flex:none;min-height:auto}
+  .panel-right{width:100%;padding:40px 32px 60px}
+  .preview-card{display:none}
+  .hero-h1{font-size:2.2rem}
+  .stats-row{gap:24px}
+}
+</style>
 </head>
 <body>
-  
-    <!-- Loader -->
 
-    <div class="loader">
-      <div class="page-lines">
-        <div class="container">
-          <div class="col-line col-xs-4">
-            <div class="line"></div>
-          </div>
-          <div class="col-line col-xs-4">
-            <div class="line"></div>
-          </div>
-          <div class="col-line col-xs-4">
-            <div class="line"></div>
-            <div class="line"></div>
-          </div>
+<div class="split">
+
+  <!-- LEFT -->
+  <div class="panel-left">
+
+    <div class="logo-mark">
+      <div class="logo-bar">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         </div>
-      </div>
-      <div class="loader-brand"> 
-        <div class="sk-folding-cube">
-          <div class="sk-cube1 sk-cube"></div>
-          <div class="sk-cube2 sk-cube"></div>
-          <div class="sk-cube4 sk-cube"></div>
-          <div class="sk-cube3 sk-cube"></div>
+        <div class="logo-text">
+          The Avatar Bar
+          <span>by Velocity Agentic</span>
         </div>
       </div>
     </div>
 
-    <!-- Header -->
+    <div class="hero-text">
+      <div class="hero-eyebrow">Avatar Authority Training</div>
+      <h1 class="hero-h1">
+        Build Your<br/>
+        <em>Digital Presence</em><br/>
+        From the Inside Out
+      </h1>
+      <p class="hero-sub">Six precision-crafted modules. One powerful transformation. Your avatar — fully realized, unapologetically you — live the same day.</p>
+    </div>
 
-    <header id="top" class="header-home">
-      <div class="brand-panel">
-        <a href="index.html" class="brand js-target-scroll">
-          go<span class="text-primary">.</span>ecmgroups </a>
-        <div class="brand-name">Go.ecmgroups</div>
-        <div class="slide-number">
-          <span class="current-number text-primary">0<span class="count">1</span></span>
-          <sup><span class="delimiter">/</span> 0<span class="total-count"></span></sup>
-        </div>
-      </div>
-      <div class="header-phone">+1 (718) 679-5177</div>
-      <div class="vertical-panel"></div>
-      <div class="vertical-panel-content">
-        <div class="vertical-panel-info">
-            <div class="vertical-panel-title">ECMG Creative Studios @ecmgroups</div>
-            <div class="line"></div>
-         </div>
-        <ul class="social-list">
-          <li><a href="https://instagram.com/ecmgroups" class="fa fa-instagram"></a></li>
-          <li><a href="https://twitter.com/ecmgroups" class="fa fa-twitter"></a></li>
-          <li><a href="https://www.youtube.com/channel/UCwdFswXpR-epgzg9tsOkYBw" class="fa fa-youtube"></a></li>
-          <li><a href="https://facebook.com/ecmgroups" class="fa fa-facebook"></a></li>
-         </ul>  
-      </div> 
-
-      <!-- Navigation Desctop -->
-
-      <nav class="navbar-desctop visible-md visible-lg">
-        <div class="container">
-          <a href="#top" class="brand js-target-scroll">
-            go<span class="text-primary">.</span>ecmgroups
-          </a>
-          <ul class="navbar-desctop-menu">
-            <li class="active">
-              <a href="index.html">Home</a>
-           </li>
-            <li>
-              <a href="about.html">About us</a>
-            </li>
-            <li>
-              <a href="thepodcast.html">Podcast</a>
-            </li>  
-            <li>
-              <a href="http://ecmgroups.com/theblog">Blog</a>
-              </li>
-            <li>
-              <a href="http://www.ecmgroups.com/theshop">Shop</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <!-- Navigation Mobile -->
-
-      <nav class="navbar-mobile">
-        <a href="#top" class="brand js-target-scroll">
-          go<span class="text-primary">.</span>ecmgroups </a>
-
-        <!-- Navbar Collapse -->
-
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-mobile">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbar-mobile"> 
-          <ul class="navbar-nav-mobile">
-            <li class="active">
-              <a href="index.html">Home</a>
-				<li>
-              <a href="about.html">About us</a>
-            </li>
-            <li>
-              <a href="thepodcast.html">Podcast</a>
-              </li>  
-            <li>
-              <a href="http://www.ecmgroups.com/theblog">Blog</a>
-            </li>
-            <li>
-              <a href="http://www.ecmgroups.com/theshop">Shop</a>
-            </li>
-      </header>
-
-  <!-- Layout -->
-
-  <div class="layout">
-    
-    <!-- Home -->
-    
-    <main class="main">
-
-      <div class="arrow-left"></div>
-      <div class="arrow-right"></div>
-
-      <!-- Start revolution slider -->
-
-      <div class="rev_slider_wrapper">
-        <div id="rev_slider" class="rev_slider fullscreenbanner">
-          <ul>
-
-            <!-- Slide 1 -->
-
-            <li  data-transition="slotzoom-horizontal" data-slotamount="7" data-masterspeed="1000" data-fsmasterspeed="1000">
-
-              <!-- Main image-->
-
-              <img src="img/slider/slide1.jpg"  alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg">
-
-              <!-- Layer 1 -->
-
-              <div class="slide-title tp-caption tp-resizeme" 
-                data-x="['right','right','right','right']" data-hoffset="['-18','-18','-18','-18']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['-35','-35', '-25']"
-                data-fontsize="['50','45', '35']"
-                data-lineheight="['80','75', '65']"
-                data-width="['1100','700','550']"
-                data-height="none"
-                data-whitespace="normal"
-                data-transform_idle="o:1;"
-                data-transform_in="x:[105%];z:0;rX:45deg;rY:0deg;rZ:90deg;sX:1;sY:1;skX:0;skY:0;s:2000;e:Power2.easeInOut;" 
-                data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
-                data-mask_in="x:50px;y:0px;s:inherit;e:inherit;" 
-                data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" 
-                data-start="500" 
-                data-splitin="chars" 
-                data-splitout="none" 
-                data-responsive_offset="on" 
-                data-elementdelay="0.05">Luxury Design and Development
-              </div>
-
-              <!-- Layer 2 -->
-
-              <div class="slide-subtitle tp-caption tp-resizeme"
-                data-x="['right','right','right','right']" data-hoffset="['0']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['75','105']"
-                data-fontsize="['18']" 
-                data-whitespace="nowrap"
-                data-transform_idle="o:1;"
-                data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1200;e:Power1.easeInOut;" 
-                data-transform_out="opacity:0;s:1000;s:1000;" 
-                data-mask_in="x:0px;y:0px;s:inherit;e:inherit;" 
-                data-start="1500" 
-                data-splitin="none" 
-                data-splitout="none">Creating memorable experiences and engagement in media, product design,<br> 
-       launches, and service development by analyzing the brand's relationship <br>
-       with their private clients that build trust. 
-              </div>
-
-              <!-- Layer 3 -->
-
-              <div class="tp-caption"
-                data-x="['right','right','right','right']" data-hoffset="['0','0','0','0']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['195','215']"
-                data-width="none"
-                data-height="none"
-                data-whitespace="nowrap"
-                data-transform_idle="o:1;"
-                data-transform_hover="o:1;rX:0;rY:0;rZ:0;z:0;s:300;e:Power1.easeInOut;"
-                data-style_hover="c:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);"
-                data-transform_in="y:50px;opacity:0;s:1500;e:Power4.easeInOut;" 
-                data-transform_out="y:[175%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
-                data-mask_out="x:inherit;y:inherit;" 
-                data-start="1500" 
-                data-splitin="none" 
-                data-splitout="none" 
-                data-responsive_offset="on"><a href="#about" class="btn js-target-scroll">Look more <i class="icon-next"></i></a>
-              </div>
-            </li>
-
-            <!-- Slide 2 -->
-
-            <li data-transition="slotzoom-horizontal" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1000">
-
-              <!-- Main image -->
-
-              <img src="img/slider/slide2.jpg"  alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg">
-
-              <!-- Layer 1 -->
-
-              <div class="slide-title tp-caption tp-resizeme" 
-                data-x="['right','right','right','right']" data-hoffset="['-18','-18','-18','-18']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['-35','-35', '-55']"
-                data-fontsize="['50','45', '35']"
-                data-lineheight="['80','75','65']"
-                data-width="['1100','700','500']"
-                data-height="none"
-                data-whitespace="normal"
-                data-transform_idle="o:1;"
-                data-transform_in="x:[105%];z:0;rX:45deg;rY:0deg;rZ:90deg;sX:1;sY:1;skX:0;skY:0;s:2000;e:Power2.easeInOut;" 
-                data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
-                data-mask_in="x:50px;y:0px;s:inherit;e:inherit;" 
-                data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" 
-                data-start="500" 
-                data-splitin="chars" 
-                data-splitout="none" 
-                data-responsive_offset="on"
-                data-elementdelay="0.05">Integrated Marketing
-              </div>
-
-
-              <!-- Layer 2 -->
-
-              <div class="slide-subtitle tp-caption tp-resizeme"
-                data-x="['right','right','right','right']" data-hoffset="['0']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['75','105']"
-                data-fontsize="['18']" 
-                data-whitespace="nowrap"
-                data-transform_idle="o:1;"
-                data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1200;e:Power1.easeInOut;" 
-                data-transform_out="opacity:0;s:1000;s:1000;" 
-                data-mask_in="x:0px;y:0px;s:inherit;e:inherit;" 
-                data-start="1500" 
-                data-splitin="none" 
-                data-splitout="none">
-                Analyzing audience, marketing, and researching best brand positioning, <br> we provide a solid foundation for successful campaigns across multiple<br> 
-                platforms reaching consumers wherever they are. 
-              </div>
-
-              <!-- Layer 3 -->
-
-              <div class="tp-caption tp-resizeme"
-                data-x="['right','right','right','right']" data-hoffset="['0']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['195','210']"
-                data-width="none"
-                data-height="none"
-                data-whitespace="nowrap"
-                data-transform_idle="o:1;"
-                data-transform_hover="o:1;rX:0;rY:0;rZ:0;z:0;s:300;e:Power1.easeInOut;"
-                data-style_hover="c:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);"
-                data-transform_in="y:50px;opacity:0;s:1500;e:Power4.easeInOut;" 
-                data-transform_out="y:[175%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
-                 data-mask_out="x:inherit;y:inherit;" 
-                data-start="1500" 
-                data-splitin="none" 
-                data-splitout="none" 
-                data-responsive_offset="on"
-                style="z-index: 8;"><a href="#about" class="btn js-target-scroll">Look more <i class="icon-next"></i></a>
-              </div>
-            </li>
-
-            <!-- Slide 3 -->
-
-            <li data-transition="slotzoom-horizontal" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1000">
-
-              <!-- Main image-->
-
-              <img src="img/slider/slide3.jpg"  alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg">
-
-              <!-- Layer 1 -->
-
-              <div class="slide-title tp-caption tp-resizeme" 
-                data-x="['right','right','right','right']" data-hoffset="['-18','-18','-18','-18']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['-35','-35', '-25']"
-                data-fontsize="['50','45', '35']"
-                data-lineheight="['80','75', '65']"
-                data-width="['1000','700','550']"
-                data-height="none"
-                data-whitespace="normal"
-                data-transform_idle="o:1;"
-                data-transform_in="x:[105%];z:0;rX:45deg;rY:0deg;rZ:90deg;sX:1;sY:1;skX:0;skY:0;s:2000;e:Power2.easeInOut;" 
-                data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
-                data-mask_in="x:50px;y:0px;s:inherit;e:inherit;" 
-                data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" 
-                data-start="500" 
-                data-splitin="chars" 
-                data-splitout="none" 
-                data-responsive_offset="on"
-                data-elementdelay="0.05">Client Acquisition Made Easy
-              </div>
-
-
-              <!-- Layer 2 -->
-
-              <div class="slide-subtitle tp-caption tp-resizeme"
-                data-x="['right','right','right','right']" data-hoffset="['0']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['75','105']"
-                data-fontsize="['18']" 
-                data-whitespace="nowrap"
-                data-transform_idle="o:1;"
-                data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1200;e:Power1.easeInOut;" 
-                data-transform_out="opacity:0;s:1000;s:1000;" 
-                data-mask_in="x:0px;y:0px;s:inherit;e:inherit;" 
-                data-start="1500" 
-                data-splitin="none" 
-                data-splitout="none">The experience is what we're all after; Not the means or money<br>
-                but the journey of the lifestyle. We build client experiences that<br> 
-                easily provoke engagement and investments in offers they need.  
-              </div>
-
-              <!-- Layer 3 -->
-
-              <div class="tp-caption tp-resizeme"
-                data-x="['right','right','right','right']" data-hoffset="['0','0','0','0']" 
-                data-y="['middle','middle','middle','middle']" data-voffset="['195','215']"
-                data-width="none"
-                data-height="none"
-                data-whitespace="nowrap"
-                data-transform_idle="o:1;"
-                data-transform_hover="o:1;rX:0;rY:0;rZ:0;z:0;s:300;e:Power1.easeInOut;"
-                data-style_hover="c:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);"
-                data-transform_in="y:50px;opacity:0;s:1500;e:Power4.easeInOut;" 
-                data-transform_out="y:[175%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
-                data-mask_out="x:inherit;y:inherit;" 
-                data-start="1500" 
-                data-splitin="none" 
-                data-splitout="none" 
-                data-responsive_offset="on" 
-                style="z-index: 8;"><a href="#about" class="btn js-target-scroll">Look more <i class="icon-next"></i></a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </main>
-
-    <div class="content">   
-    
-      <!-- About  -->
-
-      <section id="about" class="about section">
-        <div class="container">
-          <header class="section-header">
-            <h2 class="section-title">About <span class="text-primary">ECMG Creative Studios</span></h2>
-            <strong class="fade-title-left">About</strong>
-          </header>
-          <div class="section-content">
-            <div class="row-base row">
-              <div class="col-base col-sm-6 col-md-4">
-                <h3 class="col-about-title">we turn ideas into works of art<span class="text-primary">.</span></h3>
-                <div class="col-about-info">
-                  <p>When we take on a brand design project, the goal is to achieve brand consistency. Its philosophy is that every brand message has an effect on brand awareness and builds brand equity. Our approach to branding at ECMG Creative goes beyond just looking at the brand as a logo or graphic element; we begin by analyzing all brand communication tools, including creative, brand development and client acquistion. 
-Brand design is the act of creating awareness and enhancing equity with massive value.</p>
-                </div>
-              </div>
-              <div class="col-base col-about-spec col-sm-6 col-md-4">
-                <h3 class="col-about-title">our<br> specialization<span class="text-primary">:</span></h3>
-                <div class="service-item">
-                  <img alt="" width="46" src="img/img-icon/icon-architecture.png">
-                  <h4>branding</h4>
-                </div>
-                <div class="service-item">
-                  <img alt="" width="58" src="img/img-icon/icon-interiors.png">
-                  <h4>design</h4>
-                </div>
-                <div class="service-item">
-                  <img alt="" width="58" src="img/img-icon/icon-planing.png">
-                  <h4>client acquisition</h4>
-                </div>
-              </div>
-              <div class="clearfix visible-sm"></div>
-              <div class="col-base col-about-img col-sm-6 col-md-4">
-                <img alt="" class="img-responsive" src="img/380x370.jpg">
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Projects -->
-
-      <section class="projects section">
-        <div class="container">
-          <h2 class="section-title">Our <span class="text-primary">projects</span></h2>
-        </div>
-        <div class="section-content">
-          <div class="projects-carousel js-projects-carousel js-projects-gallery">
-            <div class="project project-light">
-              <a href="img/projects/1-480x880.jpg" title="project 1">
-                <figure>
-                  <img alt="" src="img/projects/1-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                   </h3>
-                    <h4 class="project-category">
-                      Brand Identity
-				</h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project project-light">
-              <a href="img/projects/2-480x880.jpg" title="project 2">
-                <figure>
-                  <img alt="" src="img/projects/2-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                 </h3>
-                <h4 class="project-category">
-                      Brand Logo
-                    </h4>
-					  <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project">
-              <a href="img/projects/3-480x880.jpg" title="project 3">
-                <figure>
-                  <img alt="" src="img/projects/3-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                 </h3>
-                    <h4 class="project-category">
-                      Event Promo
-                    </h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project">
-              <a href="img/projects/4-480x880.jpg" title="project 4">
-                <figure>
-                  <img alt="" src="img/projects/4-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                   </h3>
-                    <h4 class="project-category">
-                      Corporate Communications
-                    </h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project">
-              <a href="img/projects/5-480x880.jpg" title="project 5">
-                <figure>
-                  <img alt="" src="img/projects/5-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-              </h3>
-                    <h4 class="project-category">
-                      Brand Identity
-                    </h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project">
-              <a href="img/projects/6-480x880.jpg" title="project 6">
-                <figure>
-                  <img alt="" src="img/projects/6-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                   </h3>
-                    <h4 class="project-category">
-                      Luxury WebSuite
-                    </h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project">
-              <a href="img/projects/7-480x880.jpg" title="project 7">
-                <figure>
-                  <img alt="" src="img/projects/7-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                   </h3>
-                    <h4 class="project-category">
-                      Signage: Keepsakes
-                    </h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="project">
-              <a href="img/projects/8-480x880.jpg" title="project 8">
-                <figure>
-                  <img alt="" src="img/projects/8-480x880.jpg">
-                  <figcaption>
-                    <h3 class="project-title">
-                   </h3>
-                    <h4 class="project-category">
-                      Prospectus
-                    </h4>
-                    <div class="project-zoom"></div>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Experience -->
-
-      <section class="experience section">
-        <div class="container">
-          <div class="text-parallax" data-stellar-background-ratio="0.85" style="background-image: url('img/bg/text-1.jpg');">
-            <div class="text-parallax-content">18</div>
-          </div>
-          <h4 class="experience-info wow fadeInRight"><span class="text-primary">Years of successful work</span><br> in the market</h4>
-        </div>
-      </section>
-
-      <!-- Clients  -->
-
-      <section class="clients section">
-        <div class="container">
-          <header class="section-header">
-            <h2 class="section-title">Our <span class="text-primary">clients</span></h2>
-            <strong class="fade-title-left">clients</strong>
-          </header>
-          <div class="section-content">
-            <ul class="clients-list">
-              <li class="client">
-                <a href="#"><img alt="" src="img/clients/1.png"></a>
-              </li>
-              <li class="client">
-                <a href="#"><img alt="" src="img/clients/2.png"></a>
-              </li>
-              <li class="client">
-                <a href="#"><img alt="" src="img/clients/3.png"></a>
-              </li>
-              <li class="client">
-                <a href="#"><img alt="" src="img/clients/4.png"></a>
-              </li>
-              <li class="client">
-                <a href="#"><img alt="" src="img/clients/5.png"></a>
-              </li>
-              <li class="client">
-                <a href="#"></a>
-              </li>
-              <li class="client">
-                <a href="#"></a>
-              </li>
-              <li class="client">
-                <a href="#"></a>
-              </li>
-              <li class="client">
-                <a href="#"></a>
-              </li>
-              <li class="client">
-                <a href="#"></a>
-              </li>
-            </ul>
-          </div>
-          <div class="section-content">
-            <a href="http://ecmgroups.com/menu-in-a-minute/" class="btn btn-shadow-2">serious about Working together?&nbsp; <i class="icon-next"></i></a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contacts -->
-
-      <section class="contacts section">
-        <div class="container">
-          <header class="section-header">
-            <h2 class="section-title">Get <span class="text-primary">in touch</span></h2>
-            <strong class="fade-title-right">contacts</strong>
-          </header>
-          <div class="section-content">
-            <div class="row-base row">
-              <div class="col-address col-base col-md-4">
-                +1 (718) 697-5177<br>
-                info@ecmgroups.com<br>
-                300 Cadman Plaza, Bklyn, NY 11201
-              </div>
-              <div class="col-base  col-md-8">
-                <form class="js-ajax-form">
-                  <div class="row-field row">
-                    <div class="col-field col-sm-6 col-md-4">
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="name" placeholder="Name">
-                      </div>
-                      <div class="form-group">
-                        <input type="email" class="form-control" name="email" required placeholder="Email *">
-                      </div>
-                    </div>
-                    <div class="col-field col-sm-6 col-md-4">
-                      <div class="form-group">
-                        <input type="tel" class="form-control" name="phone" placeholder="Phone">
-                      </div>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="company" placeholder="Company">
-                      </div>
-                    </div>
-                    <div class="col-field col-sm-12 col-md-4">
-                      <div class="form-group">
-                        <textarea class="form-control" name="message" placeholder="Message"></textarea>
-                      </div>
-                    </div>
-                    <div class="col-message col-field col-sm-12">
-                      <div class="form-group">
-                        <div class="success-message"><i class="fa fa-check text-primary"></i> Thank you!. Your message is successfully sent...</div>
-                        <div class="error-message">We're sorry, but something went wrong</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-submit text-right"><button type="submit" class="btn btn-shadow-2 wow swing">Send <i class="icon-next"></i></button></div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer -->
-
-      <footer id="footer" class="footer">     
-        <div class="container">
-          <div class="row-base row">
-            <div class="col-base text-left-md col-md-4">
-              <a href="#" class="brand">
-                go<span class="text-primary">.</span>ecmgroups </a>
-            </div>
-            <div class="text-center-md col-base col-md-4">
-              <a href="https://instagram.com/ecmgroups" class="author-link">
-                by @ecmgroups
-              </a>
-            </div>
-            <div class="text-right-md col-base col-md-4">
-              © ECMG Creative Studios 2022-2029. All Rights Reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      <!-- Lines -->
-
-      <div class="page-lines">
-        <div class="container">
-          <div class="col-line col-xs-4">
-            <div class="line"></div>
-          </div>
-          <div class="col-line col-xs-4">
-            <div class="line"></div>
-          </div>
-          <div class="col-line col-xs-4">
-            <div class="line"></div>
-            <div class="line"></div>
-          </div>
-        </div>
+    <div class="deco-bar">
+      <div class="deco-line"></div>
+      <div class="deco-gems">
+        <div class="deco-gem"></div>
+        <div class="deco-gem"></div>
+        <div class="deco-gem"></div>
       </div>
     </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-num">6</span>
+        <span class="stat-label">Modules</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">&lt;1hr</span>
+        <span class="stat-label">Total Time</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">Day 1</span>
+        <span class="stat-label">Go Live</span>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="preview-card-label">Your Modules</div>
+      <div class="preview-modules">
+        <div class="preview-module"><div class="preview-module-dot done"></div>Module I · Foundation</div>
+        <div class="preview-module"><div class="preview-module-dot done"></div>Module II · Visual Identity</div>
+        <div class="preview-module"><div class="preview-module-dot"></div>Module III · Voice & Tone</div>
+        <div class="preview-module"><div class="preview-module-dot"></div>Module IV · Platform Setup</div>
+        <div class="preview-module"><div class="preview-module-dot"></div>Module V · Content Strategy</div>
+        <div class="preview-module"><div class="preview-module-dot"></div>Module VI · Launch</div>
+      </div>
+    </div>
+
   </div>
 
-<!-- SCRIPTS -->
+  <!-- RIGHT — Login -->
+  <div class="panel-right">
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/smoothscroll.js"></script>
-<script src="js/jquery.validate.min.js"></script>
-<script src="js/wow.min.js"></script>
-<script src="js/jquery.stellar.min.js"></script>
-<script src="js/jquery.magnific-popup.js"></script>
-<script src="js/owl.carousel.min.js"></script>
+    <p class="login-welcome">Member Access</p>
+    <h2 class="login-title">Welcome<br/><em>back.</em></h2>
+    <p class="login-subtitle">Sign in to continue your training</p>
 
-<!-- SLIDER REVOLUTION -->
-<script src="js/rev-slider/jquery.themepunch.tools.min.js"></script>
-<script src="js/rev-slider/jquery.themepunch.revolution.min.js"></script>
+    <div class="login-form">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"/>
+        <span class="forgot" onclick="handleForgot()">Forgot password?</span>
+      </div>
+      <p class="error-msg" id="errorMsg">Incorrect email or password. Please try again.</p>
+      <button class="login-btn" onclick="handleLogin()"><span>Enter The Bar →</span></button>
+      <div class="divider-row"><span>or</span></div>
+      <p class="access-note">Don't have access yet?<br/><a onclick="handleEnroll()">Enroll in Avatar Authority →</a></p>
+    </div>
 
-<!-- SLIDER REVOLUTION 5.0 EXTENSIONS   -->
-<script src="js/rev-slider/revolution.extension.actions.min.js"></script>
-<script src="js/rev-slider/revolution.extension.carousel.min.js"></script>
-<script src="js/rev-slider/revolution.extension.kenburn.min.js"></script>
-<script src="js/rev-slider/revolution.extension.layeranimation.min.js"></script>
-<script src="js/rev-slider/revolution.extension.migration.min.js"></script>
-<script src="js/rev-slider/revolution.extension.navigation.min.js"></script>
-<script src="js/rev-slider/revolution.extension.parallax.min.js"></script>
-<script src="js/rev-slider/revolution.extension.slideanims.min.js"></script>
-<script src="js/rev-slider/revolution.extension.video.min.js"></script>
-<script src="js/interface.js"></script> 
+    <div class="panel-right-footer">
+      <span>&#10022;</span> &nbsp; The Avatar Bar &nbsp; <span>&#10022;</span>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// Demo credentials — replace with real auth backend later
+var USERS = [
+  {email:'student@demo.com', password:'avatarbar2025', name:'Student'}
+];
+
+function handleLogin(){
+  var email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  var pass  = document.getElementById('loginPass').value;
+  var err   = document.getElementById('errorMsg');
+  var valid = USERS.find(function(u){ return u.email===email && u.password===pass; });
+  if(!email || !pass){ err.textContent='Please enter your email and password.'; err.classList.add('show'); return; }
+  if(!valid){ err.textContent='Incorrect email or password. Please try again.'; err.classList.add('show'); return; }
+  err.classList.remove('show');
+  sessionStorage.setItem('avatarbar_user', JSON.stringify({email:valid.email, name:valid.name}));
+  window.location.href = 'dashboard.html';
+}
+
+function handleForgot(){
+  alert('Please contact your instructor to reset your password.');
+}
+
+function handleEnroll(){
+  alert('Enrollment coming soon. Contact us to get access!');
+}
+
+// Allow Enter key to submit
+document.addEventListener('keydown', function(e){
+  if(e.key==='Enter') handleLogin();
+});
+</script>
 </body>
 </html>
